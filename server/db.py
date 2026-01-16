@@ -2,7 +2,7 @@ import sqlite3
 from message import Message
 
 class Database:
-    def __init__(self, db_path: str = "cpbechat.db"):
+    def __init__(self, db_path: str = "cpnechat.db"):
         self.db_path = db_path
 
         self.connection = None
