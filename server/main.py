@@ -21,9 +21,6 @@ user_actions = UserActions(db)
 db.init_db()
 
 
-@app.route('/', methods=['GET'])
-def home():
-    return render_template("index.html")
 
 @app.route('/new_message', methods = ['GET', 'POST'])
 def new_message():
