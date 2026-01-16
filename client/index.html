@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <link rel="icon" type="image/svg+xml" href="./img/icone.png">
+    <link rel="stylesheet" href="./style.css"/>
+    <script defer src="./script.js"></script>
+    <script defer src="./api.js" type="module"></script>
+
+    <title>CPNE chat</title>
+  </head>
+
+  <body>
+
+    <div class="app">
+      <header class="topbar">
+        <div class="logo">CPNE chat</div>
+      </header>
+
+      <main class="chat-container">
+        <section class="messages">
+        <template id="msgTemplate">
+            <div class="msg">
+                <div class="username">
+                    <p class="user"></p>
+                    <p class="tag"></p>
+                </div>
+                <p class="msgTxt"></p>
+            </div>
+        </template>
+
+        <div id="messagesBox"></div>
+
+          <div class="input-zone">
+            <input type="text" id="username" placeholder="Votre pseudo...">
+            <textarea id="message" placeholder="Votre message..."></textarea>
+            <button id="sendBtn">
+              <span class="send-icon">➤</span>
+            </button>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
