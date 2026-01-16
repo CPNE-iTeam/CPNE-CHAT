@@ -8,6 +8,8 @@ from db import Database
 
 SERVER_PORT = 80
 MESSAGES_TIME_LIMIT = 1  # seconds
+FLASK_DEBUG = True
+HOST = "0.0.0.0"
 
 app = Flask(__name__)
 CORS(app)
@@ -72,4 +74,4 @@ def get_messages():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=SERVER_PORT)
+    app.run(host=HOST, port=SERVER_PORT, debug=FLASK_DEBUG)
