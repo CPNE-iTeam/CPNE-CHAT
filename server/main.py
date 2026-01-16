@@ -11,6 +11,7 @@ SERVER_PORT = 80
 MESSAGES_TIME_LIMIT = 1  # seconds
 FLASK_DEBUG = True
 HOST = "0.0.0.0"
+MESSAGES_LIMIT = 30
 
 app = Flask(__name__)
 CORS(app)
@@ -61,6 +62,11 @@ def new_message():
 
     try:
         db.new_message(message)
+        messages = db.get_messages()
+        if len(messages) > MESSAGES_LIMIT:
+            for i in range(len(messages) - MESSAGES_LIMIT):
+                oldest_message = messages[i]
+                db.delete_message(oldest_message.id)
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
