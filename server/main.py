@@ -1,5 +1,5 @@
 import html
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS
 import time
 
@@ -23,7 +23,7 @@ db.init_db()
 
 @app.route('/', methods=['GET'])
 def home():
-    return "Welcome to the CPNEchat API !"
+    return render_template("index.html")
 
 @app.route('/new_message', methods = ['GET', 'POST'])
 def new_message():
