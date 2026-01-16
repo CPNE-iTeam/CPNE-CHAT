@@ -5,6 +5,7 @@ import time
 
 from message import Message
 from db import Database
+from user_actions import UserActions
 
 SERVER_PORT = 80
 MESSAGES_TIME_LIMIT = 1  # seconds
@@ -15,6 +16,7 @@ app = Flask(__name__)
 CORS(app)
 
 db = Database()
+user_actions = UserActions(db)
 db.init_db()
 
 
@@ -54,6 +56,9 @@ def new_message():
     if len(author_messages) > 0 and author_messages[-1].time + MESSAGES_TIME_LIMIT > nowTime:
         return jsonify({"status": "error", "message": "You are sending messages too quickly. Please wait a moment before sending another message."}), 429
 
+    if not user_actions.execute_action(message):
+        return jsonify({"status": "success"}), 200
+
     try:
         db.new_message(message)
     except Exception as e:
@@ -69,7 +74,7 @@ def get_messages():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-    messages_dict = [message.to_dict(includes=["content", "author", "authorNameTag", "time"]) for message in messages]
+    messages_dict = [message.to_dict(includes=["id", "content", "author", "authorNameTag", "time"]) for message in messages]
     return jsonify({"status": "success", "messages": messages_dict}), 200
 
 

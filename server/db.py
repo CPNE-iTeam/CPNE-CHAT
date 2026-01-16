@@ -25,35 +25,41 @@ class Database:
         self.cursor.execute(self.tables_sql)
         self.connection.commit()
 
-    def new_message(self, message: Message):
+    def new_message(self, message: Message) -> int:
         insert_sql = """
         INSERT INTO messages (content, author, authorIP, authorNameTag, time)
         VALUES (?, ?, ?, ?, ?)
         """
         self.cursor.execute(insert_sql, (message.content, message.author, message.authorIP, message.authorNameTag, message.time))
         self.connection.commit()
+        return self.cursor.lastrowid
 
     def get_messages(self) -> list[Message]:
-        select_sql = "SELECT content, author, authorIP, authorNameTag, time FROM messages ORDER BY time ASC"
+        select_sql = "SELECT id, content, author, authorIP, authorNameTag, time FROM messages ORDER BY time ASC"
         self.cursor.execute(select_sql)
         rows = self.cursor.fetchall()
         messages = []
         
         for row in rows:
-            messages.append(Message(row[0], row[1], row[2], row[3], row[4]))
+            messages.append(Message(row[1], row[2], row[3], row[4], row[5], row[0]))
 
         return messages
     
     def get_messages_from_authorIP(self, authorIP: str) -> list[Message]:
-        select_sql = "SELECT content, author, authorIP, authorNameTag, time FROM messages WHERE authorIP = ? ORDER BY time ASC"
+        select_sql = "SELECT id, content, author, authorIP, authorNameTag, time FROM messages WHERE authorIP = ? ORDER BY time ASC"
         self.cursor.execute(select_sql, (authorIP,))
         rows = self.cursor.fetchall()
         messages = []
         
         for row in rows:
-            messages.append(Message(row[0], row[1], row[2], row[3], row[4]))
+            messages.append(Message(row[1], row[2], row[3], row[4], row[5], row[0]))
 
         return messages
+
+    def delete_message(self, message_id: int):
+        delete_sql = "DELETE FROM messages WHERE id = ?"
+        self.cursor.execute(delete_sql, (message_id,))
+        self.connection.commit()
 
     def close_db(self):
         if self.connection:
